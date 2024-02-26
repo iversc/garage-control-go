@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<link rel="stylesheet" href="/stylesheets/style.css" />
+		<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jsSHA/2.3.1/sha1.js"></script>
+		<script type="text/javascript" src="/javascripts/garage.js"></script>
+		<title>Remote Control App</title>
+	</head>
+	<body>
+		<h1>Remote Control App</h1>
+		<p>Welcome to Remote Control App</p>
+		<input id="secret" type="text" name="secret" />
+		<br><br>
+		<button onclick="lightson()">Lights On</button>
+		<button onclick="lightsoff()">Lights Off</button>
+		<br><br>
+		<button onclick="activate()">Activate the door</button>
+		<br><br>
+		<button onclick="shutdown()">Shutdown Pi</button>
+		<br><br>
+		<button onclick="reboot()">Reboot Pi</button>
+		<br><br>
+		<p id="info">Click a command to run it.</p>
+	</body>
+</html>
