@@ -124,6 +124,7 @@ func switchLights(enabled string) {
         os.Exit(1)
     }
 
+	fmt.Printf("Response Code: %s\n", res.Status)
     fmt.Printf("Response: %s\n", resBody)
 }
 
@@ -174,11 +175,19 @@ func getCommand(w http.ResponseWriter, r *http.Request) {
 
 func main() {
 	myAuthCode, err := os.ReadFile("keyfile")
-	authCode = []byte(strings.TrimSpace(string(myAuthCode)))
 	if err != nil {
 		fmt.Println("Error reading keyfile")
 		os.Exit(1)
 	}
+	authCode = []byte(strings.TrimSpace(string(myAuthCode)))
+	
+	myHueUser, err := os.ReadFile("hueuser")
+	if err != nil {
+		fmt.Println("Error reading hueuser")
+		os.Exit(1)
+	}
+	hueUser = strings.TrimSpace(string(myHueUser))
+	
 	fmt.Println("Setting up server...")
 	r := mux.NewRouter()
 	r.HandleFunc("/command/{cmd}", getCommand)
