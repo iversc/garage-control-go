@@ -187,7 +187,14 @@ func main() {
 		os.Exit(1)
 	}
 	hueUser = strings.TrimSpace(string(myHueUser))
-	
+
+    fmt.Println("Activating GPIO...")
+    cmd := exec.Command("gpio", "-g", "mode", "4", "out")
+    if err := cmd.Run(); err != nil {
+        fmt.Println("gpio modeset call failed.")
+        return
+    }
+
 	fmt.Println("Setting up server...")
 	r := mux.NewRouter()
 	r.HandleFunc("/command/{cmd}", getCommand)
