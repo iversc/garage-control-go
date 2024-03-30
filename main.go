@@ -14,8 +14,6 @@ import (
 	"os/exec"
 	"strings"
 	"time"
-
-	"github.com/gorilla/mux"
 )
 
 var authCode []byte 
@@ -160,9 +158,13 @@ func runCommand(cmd string, w http.ResponseWriter) {
 }
 
 func getCommand(w http.ResponseWriter, r *http.Request) {
-	vars := mux.Vars(r)
-	fmt.Printf("got /commmand/%s request\n", vars["cmd"])
-	clientAuthCode := strings.Split(r.Header["Authorization"][0], " ")[1]
+	cmd := r.PathValue("cmd")
+	fmt.Printf("got /commmand/%s request\n", cmd)
+    authHeader := strings.Split(r.Header.Get("Authorization"), " ")
+    clientAuthCode := ""
+    if len(authHeader) > 1 {
+        clientAuthCode = authHeader[1]
+    }
 	if !checkAuth(clientAuthCode) {
 		fmt.Println("Invalid auth code from client.")
 		w.WriteHeader(http.StatusForbidden)
@@ -170,7 +172,7 @@ func getCommand(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	runCommand(vars["cmd"], w)
+	runCommand(cmd, w)
 }
 
 func main() {
@@ -196,7 +198,7 @@ func main() {
     }
 
 	fmt.Println("Setting up server...")
-	r := mux.NewRouter()
+	r := http.NewServeMux()
 	r.HandleFunc("/command/{cmd}", getCommand)
 
 	fs := http.FileServer(http.Dir("public"))

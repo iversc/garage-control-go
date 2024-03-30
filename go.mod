@@ -1,5 +1,4 @@
 module github.com/iversc/garage-control-go
 
-go 1.22.0
+go 1.22.1
 
-require github.com/gorilla/mux v1.8.1 // indirect
