@@ -54,7 +54,7 @@ func checkAuth(clientAuthCode string) bool {
 
 func deactivate() {
     time.Sleep(1 * time.Second)
-    cmd := exec.Command("gpio", "-g", "write", "4", "0")
+    cmd := exec.Command("pinctrl", "set", "4", "dl")
     if err := cmd.Run(); err != nil {
         fmt.Println("gpio off call failed.")
         return
@@ -64,7 +64,7 @@ func deactivate() {
 }
 
 func activate() {
-    cmd := exec.Command("gpio", "-g", "write", "4", "1")
+    cmd := exec.Command("pinctrl", "set", "4", "dh")
     if err := cmd.Run(); err != nil {
         fmt.Println("gpio on call failed.")
         return
@@ -191,9 +191,10 @@ func main() {
 	hueUser = strings.TrimSpace(string(myHueUser))
 
     fmt.Println("Activating GPIO...")
-    cmd := exec.Command("gpio", "-g", "mode", "4", "out")
+    cmd := exec.Command("pinctrl", "set", "4", "op")
     if err := cmd.Run(); err != nil {
         fmt.Println("gpio modeset call failed.")
+        fmt.Println(err)
         return
     }
 
